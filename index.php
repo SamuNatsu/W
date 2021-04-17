@@ -1,11 +1,11 @@
 <?php
 /**
- * 文字-WORD
+ * A modified theme W
  *
- * @package Typecho Theme W
- * @author 季悠然
- * @version 1.2
- * @link https://季悠然.space
+ * @package Typecho Theme W Modified By Rainiar
+ * @author Rainiar
+ * @version 1.0.0
+ * @link https://rainiar.top
  */
 
 if (!defined('__TYPECHO_ROOT_DIR__')) exit;
