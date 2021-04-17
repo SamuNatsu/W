@@ -1,6 +1,6 @@
-## W modified by Rainiar
+## WR
 
-It's a modified version for [寒夏摸鱼站](https://rainiar.top).
+It's a modified W for [寒夏摸鱼站](https://rainiar.top).
 
 ## Origin README.md
 
