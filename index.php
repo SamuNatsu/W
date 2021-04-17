@@ -22,8 +22,8 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 	<?php endwhile; ?>
 
   <div class="clear changePage">
-      <?php $this->pageLink('返回','prev'); ?>
-      <?php $this->pageLink('更多','next'); ?>
+      <?php $this->pageLink('上一页','prev'); ?>
+      <?php $this->pageLink('下一页','next'); ?>
   </div>
 
 </div><!-- end #article-list-->
