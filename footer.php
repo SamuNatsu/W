@@ -2,13 +2,15 @@
 </div><!-- end main -->
 
 <div id="footer" class="clear">
-  <p class="left">Made with ❤️ by <a href="https://季悠然.space">季悠然</a> | <?php getBuildTime($this->options->createDate); ?></p>
+  <p style="text-align:left;">Copyright &copy; <?php echo date('Y');?> <a href="<?php Helper::options()->siteUrl()?>"><?php $this->options->title()?></a>. All Rights Reserved.</p>
+  <p style="text-align:left;">Theme <a href="https://github.com/youranreus/W">W</a> Made by <a href="https://季悠然.space">季悠然</a> | Modified by <a href="https://rainiar.top">Rainiar</a> as Theme <a href="https://github.com/SamuNatsu/WR">WR</a></p>
+  <p style="text-align:left;">Run for <?php getBuildTime($this->options->createDate); ?></p>
   <p class="right"><a href="http://beian.miit.gov.cn/"><?php $this->options->ICP(); ?></a></p>
 </div><!-- end #footer -->
 <?php $this->need('sliderbar.php'); ?>
-<script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.3.0/dist/lazyload.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.min.js"></script>
 </body>
-<img id="gototop" src="<?php $this->options->themeUrl('ico/top.svg'); ?>"></img>
+<img id="gototop" style="display:none;" src="<?php $this->options->themeUrl('ico/top.svg'); ?>"></img>
 <script data-no-instant src="<?php $this->options->themeUrl('W.js?v=1.50'); ?>"></script>
 <script>
   lazyloadReady();
@@ -31,8 +33,5 @@
 </script>
 <?php endif;?>
 <script src="https://cdn.jsdelivr.net/gh/youranreus/R@v1.1.0/W/prism.js"></script>
-<script>
-  <?php echo $this->options->CustomJSf;?>
-</script>
 <?php $this->footer(); ?>
 </html>
