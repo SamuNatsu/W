@@ -2,7 +2,7 @@
 /**
  * A modified theme W
  *
- * @package Typecho Theme W Modified By Rainiar
+ * @package Typecho Theme WR
  * @author Rainiar
  * @version 1.0.0
  * @link https://rainiar.top
