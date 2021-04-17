@@ -1,3 +1,9 @@
+## W modified by Rainiar
+
+It's a modified version for [寒夏摸鱼站](https://rainiar.top).
+
+## Origin README.md
+
 > 又是一个简洁的Typecho主题
 
 ### 日常前戏
