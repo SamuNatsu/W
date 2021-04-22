@@ -1,6 +1,9 @@
 html{
   background: #2c2a2a;
 }
+body {
+    background-color: rgba(0, 0, 0, 0.9)!important;
+}
 h1,h2,h3,h4,h5,p,a,em,strong,li{
   color: #909090!important;
 }
@@ -20,12 +23,21 @@ h1,h2,h3,h4,h5,p,a,em,strong,li{
 .sliderbar-profile-content  h2 a{
   color: white!important;
 }
+.blog-bottom-bar {
+    background-color: rgba(255,255,255,0)!important;
+}
+#sliderbar {
+    background: rgba(255,255,255,0.05)!important;
+}
 #sliderbar-menu a {
     font-weight: 600;
     color: #909090;
 }
 #sliderbar-menu a:hover {
     color: #fff!important;
+}
+#header {
+    background-color: rgba(255,255,255,0)!important;
 }
 #header-f {
     background: RGBA(44,42,42,0.85)!important;
@@ -34,9 +46,21 @@ h1,h2,h3,h4,h5,p,a,em,strong,li{
 #header h2 a img {
     display: none;
 }
+#footer {
+    background-color: rgba(255,255,255,0)!important;
+}
+#article-list {
+    background-color: rgba(255,255,255,0)!important;
+}
+#articleContent {
+    background-color: rgba(255,255,255,0)!important;
+}
 #articleInfo{
     background: RGBA(64,62,62,0.5);
     border-left: 5px solid RGBA(64,62,62,1);
+}
+#comments {
+    background-color: rgba(255,255,255,0)!important;
 }
 hr{
   border-top: 3px solid rgba(64,62,62,1);

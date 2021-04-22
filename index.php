@@ -16,7 +16,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 	<?php while($this->next()): ?>
     <div class="article-item">
       <h2><a href="<?php $this->permalink() ?>"><?php $this->title() ?></a></h2>
-      <span><?php $this->author(); ?> · <?php $this->category(' · '); ?> · <?php echo formatTime($this->created);?></span><br/>
+      <span><?php $this->author(); ?> · <?php $this->category(' . ')?> · <?php echo formatTime($this->created);?></span><br/>
       <p><?php $this->excerpt(50);?></p>
     </div>
 	<?php endwhile; ?>

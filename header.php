@@ -1,4 +1,5 @@
 <?php if (!defined('__TYPECHO_ROOT_DIR__')) exit; ?>
+<?php ob_start(); ?>
 <!DOCTYPE HTML>
 <html class="no-js">
 <head>
@@ -14,7 +15,7 @@
         ), '', ' - '); ?><?php $this->options->title(); ?></title>
 
     <!-- 使用url函数转换相关路径 -->
-    <link rel="stylesheet" href="<?php $this->options->themeUrl('style.css?v=1.999'); ?>">
+    <link rel="stylesheet" href="<?php $this->options->themeUrl('style.css?v=1.997'); ?>">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/youranreus/R@v1.1.0/W/prism.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/youranreus/R@v1.1.0/W/typo.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/youranreus/R@v1.1.0/G/CSS/OwO.min.css">
@@ -23,6 +24,8 @@
     <link rel="icon" type="image/png" href="<?php $this->options->logoUrl(); ?>">
     <link href="/favicon.ico" rel="icon">
     <link rel="apple-touch-icon-precomposed" href="/favicon.ico">
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
 
     <!-- 通过自有函数输出HTML头部信息 -->
     <?php $this->header(); ?>
@@ -36,7 +39,6 @@
     <?php endif; ?>
 
     <script>
-      <?php echo $this->options->CustomJSh;?>
       if(document.cookie.replace(/(?:(?:^|.*;\s*)night\s*\=\s*([^;]*).*$)|^.*$/, "$1") == ''){
           if(new Date().getHours() > 22 || new Date().getHours() < 6){
             document.querySelector('link[title="dark"]').disabled = true;
@@ -89,12 +91,10 @@
     }
     <?php endif; ?>
 
-    <?php echo $this->options->CustomCSS;?>
-
     </style>
 
 </head>
-<body>
+<body style="background-image:url(<?php echo $this->options->bodyBG; ?>);background-repeat: no-repeat;background-attachment: fixed;background-size: cover;<?php echo $this->options->bodyCSS; ?>">
 
 <!-- main -->
 <div id="main">

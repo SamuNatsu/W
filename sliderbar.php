@@ -2,7 +2,6 @@
 
   <div class="sliderbar-container">
     <div id="sliderbar-profile" class="sliderbar-content clear">
-
       <div id="sliderbar-profile-meta" class="left">
         <?php if($this->options->avatarUrl != ''): ?>
           <img id="sliderbar-profile-avatar" src="<?php echo $this->options->avatarUrl; ?>"/>
@@ -31,7 +30,6 @@
           <?php endif; ?>
         </div>
       </div>
-
       <div class="profile-background" style="background-image: url(<?php echo $this->options->profileBG; ?>);"></div>
     </div>
 
@@ -58,11 +56,11 @@
         fetch('https://v1.hitokoto.cn/?c=b')
           .then(response => response.json())
           .then(data => {
-            const hitokoto = document.getElementById('hitokoto_text')
-            hitokoto.href = 'https://hitokoto.cn/?uuid=' + data.uuid
-            hitokoto.innerText = data.hitokoto + '——' + data.from
+            const hitokoto = document.getElementById('hitokoto_text');
+            hitokoto.href = 'https://hitokoto.cn/?uuid=' + data.uuid;
+            hitokoto.innerText = data.hitokoto + '——' + data.from;
           })
-          .catch(console.error)
+          .catch(console.error);
       </script>
     </div>
 

@@ -35,3 +35,12 @@
 <script src="https://cdn.jsdelivr.net/gh/youranreus/R@v1.1.0/W/prism.js"></script>
 <?php $this->footer(); ?>
 </html>
+<?php
+$html_source = ob_get_contents();
+ob_clean();
+if ($this->options->enableCompressHTML == 1)
+    print compressHtml($html_source);
+else
+    print $html_source;
+ob_end_flush();
+?>

@@ -1,5 +1,6 @@
 <?php if (!defined('__TYPECHO_ROOT_DIR__')) exit;?>
 <div id="comments">
+    <h2 style="font-weight: 600;font-size: 1.5rem;padding-left: 7px;margin-bottom: 20px;">评论</h2>
     <?php $this->comments()->to($comments); ?>
     <?php if ($comments->have()): ?>
     <?php $comments->listComments(); ?>
