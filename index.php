@@ -7,25 +7,28 @@
  * @version 1.1.0
  * @link https://rainiar.top
  */
-
-if (!defined('__TYPECHO_ROOT_DIR__')) exit;
- $this->need('header.php');
- ?>
+if (!defined('__TYPECHO_ROOT_DIR__'))
+    exit;
+$this->need('header.php');
+?>
 
 <div id="article-list">
-	<?php while($this->next()): ?>
+	<?php while ($this->next()):?>
     <div class="article-item">
-      <h2><a href="<?php $this->permalink() ?>"><?php $this->title() ?></a></h2>
-      <span><?php $this->author(); ?> · <?php $this->category(' . ')?> · <?php echo formatTime($this->created);?></span><br/>
-      <p><?php $this->excerpt(50);?></p>
+        <h2><a href="<?php $this->permalink()?>"><?php $this->title()?></a></h2>
+        <span><?php $this->author()?> · <?php $this->category(' . ')?> · <?php echo formatTime($this->created)?></span>
+        <br/>
+        <p><?php $this->excerpt(50)?></p>
     </div>
-	<?php endwhile; ?>
+	<?php endwhile;?>
 
-  <div class="clear changePage">
-      <?php $this->pageLink('上一页','prev'); ?>
-      <?php $this->pageLink('下一页','next'); ?>
-  </div>
+    <div class="clear changePage">
+        <?php
+        $this->pageLink('上一页', 'prev');
+        $this->pageLink('下一页', 'next');
+        ?>
+    </div>
+</div>
+<!-- end #article-list-->
 
-</div><!-- end #article-list-->
-
-<?php $this->need('footer.php'); ?>
+<?php $this->need('footer.php')?>

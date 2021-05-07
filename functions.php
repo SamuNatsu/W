@@ -5,6 +5,9 @@ if (!defined('__TYPECHO_ROOT_DIR__'))
 function themeConfig($form) {
     echo "<link rel='stylesheet' href='https://cdn.jsdelivr.net/gh/youranreus/R@v1.1.5/G/CSS/S.css'/>";
     echo "<h2>W主题设置</h2>";
+    
+    $links = new Typecho_Widget_Helper_Form_Element_Textarea('links', NULL, NULL, _t('友情链接JSON'), _t('输入一个JSON数组，里面每个元素的都是对象<br/>对象中有name、addr、tag、sign和avt字段<br/>字段分别表示名字、博客地址、标签、签名和头像地址'));
+    $form->addInput($links);
 
     $logoUrl = new Typecho_Widget_Helper_Form_Element_Text('logoUrl', NULL, NULL, _t('站点 LOGO 地址'), _t('在这里填入一个图片 URL 地址, 以在网站标题前加上一个 LOGO'));
     $form->addInput($logoUrl);
@@ -70,8 +73,8 @@ function themeConfig($form) {
     $ysj = $sjdq['value'];
     if(isset($_POST['type'])) {
         if($_POST["type"] == "备份模板数据") {
-            if($db->fetchRow($db->select()->from ('table.options')->where ('name = ?', 'theme:Wbf'))) {
-                $update = $db->update('table.options')->rows(array('value'=>$ysj))->where('name = ?', 'theme:Wbf');
+            if($db->fetchRow($db->select()->from ('table.options')->where ('name = ?', 'theme:WRbackup'))) {
+                $update = $db->update('table.options')->rows(array('value'=>$ysj))->where('name = ?', 'theme:WRbackup');
                 $updateRows= $db->query($update);
                 echo '<div class="tongzhi">备份已更新，请等待自动刷新！如果等不到请点击';
 ?>
@@ -80,7 +83,7 @@ function themeConfig($form) {
 <?php
             }
             elseif($ysj) {
-                    $insert = $db->insert('table.options')->rows(array('name' => 'theme:Wbf','user' => '0','value' => $ysj));
+                    $insert = $db->insert('table.options')->rows(array('name' => 'theme:WRbackup','user' => '0','value' => $ysj));
                     $insertId = $db->query($insert);
                     echo '<div class="tongzhi">备份完成，请等待自动刷新！如果等不到请点击';
 ?>
@@ -90,8 +93,8 @@ function themeConfig($form) {
             }
         }
         if($_POST["type"] == "还原模板数据") {
-            if($db->fetchRow($db->select()->from ('table.options')->where ('name = ?', 'theme:Wbf'))) {
-                $sjdub = $db->fetchRow($db->select()->from ('table.options')->where ('name = ?', 'theme:Wbf'));
+            if($db->fetchRow($db->select()->from ('table.options')->where ('name = ?', 'theme:WRbackup'))) {
+                $sjdub = $db->fetchRow($db->select()->from ('table.options')->where ('name = ?', 'theme:WRbackup'));
                 $bsj = $sjdub['value'];
                 $update = $db->update('table.options')->rows(array('value'=>$bsj))->where('name = ?', 'theme:W');
                 $updateRows = $db->query($update);
@@ -105,8 +108,8 @@ function themeConfig($form) {
                 echo '<div class="tongzhi">没有模板备份数据，恢复不了哦！</div>';
         }
         if($_POST["type"] == "删除备份数据") {
-            if($db->fetchRow($db->select()->from ('table.options')->where ('name = ?', 'theme:Wbf'))) {
-                $delete = $db->delete('table.options')->where ('name = ?', 'theme:Wbf');
+            if($db->fetchRow($db->select()->from ('table.options')->where ('name = ?', 'theme:WRbackup'))) {
+                $delete = $db->delete('table.options')->where ('name = ?', 'theme:WRbackup');
                 $deletedRows = $db->query($delete);
                 echo '<div class="tongzhi">删除成功，请等待自动刷新，如果等不到请点击';
 ?>
@@ -233,10 +236,22 @@ function next_post($archive) {
         echo "<p class=\"next\"><span>没有更多了</span></p>";
 }
 
+// Links
+function formatOut($json) {
+    $json = json_decode($json, true);
+    if ($json == NULL) {
+        echo '<p style="text-align:center;"><b style="color:red;">[Links error]</b></p>';
+        return;
+    }
+    foreach ($json as $key) {
+        echo '<li><a href="' . $key['addr'] . '" title="' . $key['name'] . ' | ' . $key['sign'] . '" target="_blank"></a><img src="' . $key['avt'] . '"/><div><h3>' . $key['name'] . '</h3><span>' . $key['tag'] . '</span><p>' . $key['sign'] . '</p></div></li>';
+    }
+}
+
 // Compress html
 function compressHtml($html_source) {
     $chunks = preg_split('/(<!--<nocompress>-->.*?<!--<\/nocompress>-->|<nocompress>.*?<\/nocompress>|<pre.*?\/pre>|<textarea.*?\/textarea>|<script.*?\/script>)/msi', $html_source, -1, PREG_SPLIT_DELIM_CAPTURE);
-    $compress = '<!-- COMPRESSED -->';
+    $compress = '';
     foreach ($chunks as $c) {
         if (strtolower(substr($c, 0, 19)) == '<!--<nocompress>-->') {
             $c = substr($c, 19, strlen($c) - 19 - 20);
@@ -282,5 +297,5 @@ function compressHtml($html_source) {
         $c = preg_replace('/<!--[^!]*-->/', '', $c);
         $compress .= $c;
     }
-    return $compress;
+    return $compress . '<!-- COMPRESSED -->';
 }

@@ -6,7 +6,7 @@
         <?php if($this->options->avatarUrl != ''): ?>
           <img id="sliderbar-profile-avatar" src="<?php echo $this->options->avatarUrl; ?>"/>
         <?php else: ?>
-          <img id="sliderbar-profile-avatar" src="https://sdn.geekzu.org/avatar/<?php echo md5($this->author->mail); ?>"/>
+          <img id="sliderbar-profile-avatar" src="<?php echo Typecho_Common::gravatarUrl($this->author->mail, '', '', ''); ?>"/>
         <?php endif; ?>
       </div>
 
@@ -35,7 +35,7 @@
 
     <div class="sliderbar-content" id="sliderbar-menu">
       <?php $this->widget('Widget_Contents_Page_List')->to($pages); ?>
-      <a href="/" title="<?php $pages->title(); ?>">首页</a>
+      <a href="/" title="首页">首页</a>
       <?php while($pages->next()): ?>
         <a href="<?php $pages->permalink(); ?>" title="<?php $pages->title(); ?>"><?php $pages->title(); ?></a>
       <?php endwhile; ?>
