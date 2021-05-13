@@ -265,6 +265,11 @@ blockquote p {
 	width:19px!important;
 	height:19px!important
 }
+.comment-ico {
+    vertical-align:middle;
+    top:-1px;
+    position:relative
+}
 #sliderbar-toc h3 {
 	border-left:3px solid #eee;
 	padding-left:10px;
@@ -590,13 +595,14 @@ input.submit {
 	border-bottom:2px solid #909090
 }
 #footer {
-	width:800px;
+	width:770px;
 	margin:10px auto 0 auto;
 	font-size:1rem;
 	font-weight:600;
 	background:rgba(255,255,255);
 	padding:5px 15px 5px 15px;
-	border-radius:15px 15px 0 0
+	border-radius:15px 15px 0 0;
+	transition:all .5s
 }
 #footer p {
 	display:block;

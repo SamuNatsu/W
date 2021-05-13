@@ -44,12 +44,6 @@ function themeConfig($form) {
     ) , '1', _t('给你的图片加上阴影') , _t('默认为开启'));
     $form->addInput($enableImgShadow);
 
-    $enableInstantclick = new Typecho_Widget_Helper_Form_Element_Radio('enableInstantclick', array(
-        '1' => _t('是') ,
-        '0' => _t('否')
-    ) , '0', _t('开启Instantclick预加载') , _t('默认为关闭，开启后评论可能有BUG（在修了在修了'));
-    $form->addInput($enableInstantclick);
-
     $enableCompressHTML = new Typecho_Widget_Helper_Form_Element_Radio('enableCompressHTML', array(
         '1' => _t('是') ,
         '0' => _t('否')
@@ -69,7 +63,7 @@ function themeConfig($form) {
     $form->addInput($cardSliderbar);
 
     $db = Typecho_Db::get();
-    $sjdq=$db->fetchRow($db->select()->from ('table.options')->where ('name = ?', 'theme:W'));
+    $sjdq=$db->fetchRow($db->select()->from ('table.options')->where ('name = ?', 'theme:WR'));
     $ysj = $sjdq['value'];
     if(isset($_POST['type'])) {
         if($_POST["type"] == "备份模板数据") {
@@ -96,7 +90,7 @@ function themeConfig($form) {
             if($db->fetchRow($db->select()->from ('table.options')->where ('name = ?', 'theme:WRbackup'))) {
                 $sjdub = $db->fetchRow($db->select()->from ('table.options')->where ('name = ?', 'theme:WRbackup'));
                 $bsj = $sjdub['value'];
-                $update = $db->update('table.options')->rows(array('value'=>$bsj))->where('name = ?', 'theme:W');
+                $update = $db->update('table.options')->rows(array('value'=>$bsj))->where('name = ?', 'theme:WR');
                 $updateRows = $db->query($update);
                 echo '<div class="tongzhi">检测到模板备份数据，恢复完成，请等待自动刷新！如果等不到请点击';
 ?>
@@ -121,8 +115,7 @@ function themeConfig($form) {
                 echo '<div class="tongzhi">不用删了！备份不存在！！！</div>';
         }
     }
-    echo '<div id="backup"><form class="protected Data-backup" action="?Wbf" method="post"><h4>数据备份</h4>
-    <input type="submit" name="type" class="btn btn-s" value="备份模板数据" />&nbsp;&nbsp;<input type="submit" name="type" class="btn btn-s" value="还原模板数据" />&nbsp;&nbsp;<input type="submit" name="type" class="btn btn-s" value="删除备份数据" /></form></div>';
+    echo '<div id="backup"><form class="protected Data-backup" action="?Wbf" method="post"><h4>数据备份</h4><input type="submit" name="type" class="btn btn-s" value="备份模板数据" />&nbsp;&nbsp;<input type="submit" name="type" class="btn btn-s" value="还原模板数据" />&nbsp;&nbsp;<input type="submit" name="type" class="btn btn-s" value="删除备份数据" /></form></div>';
 }
 
 //感谢泽泽大佬的代码
@@ -181,16 +174,15 @@ function emotionContent($content, $url) {
 
 function getBuildTime($date) {
     // 在下面按格式输入本站创建的时间
-    if($date == '') {
+    if ($date == '') {
         echo '';
         return;
     }
     $site_create_time = strtotime($date);
     $time = time() - $site_create_time;
-    if(is_numeric($time)) {
+    if (is_numeric($time)) {
         $value = array(
-            "years" => 0, "days" => 0, "hours" => 0,
-            "minutes" => 0, "seconds" => 0
+            "years" => 0, "days" => 0, "hours" => 0, "minutes" => 0, "seconds" => 0
         );
         $value["days"] = floor($time / 86400);
         echo '<span class="btime">' . $value['days'] . ' Days</span>';
@@ -243,9 +235,8 @@ function formatOut($json) {
         echo '<p style="text-align:center;"><b style="color:red;">[Links error]</b></p>';
         return;
     }
-    foreach ($json as $key) {
+    foreach ($json as $key)
         echo '<li><a href="' . $key['addr'] . '" title="' . $key['name'] . ' | ' . $key['sign'] . '" target="_blank"></a><img src="' . $key['avt'] . '"/><div><h3>' . $key['name'] . '</h3><span>' . $key['tag'] . '</span><p>' . $key['sign'] . '</p></div></li>';
-    }
 }
 
 // Compress html

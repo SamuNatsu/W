@@ -1,73 +1,78 @@
 <div id="sliderbar">
+    <div class="sliderbar-container">
+        <div id="sliderbar-profile" class="sliderbar-content clear">
+            <div id="sliderbar-profile-meta" class="left">
+                <?php if($this->options->avatarUrl != ''): ?>
+                <img id="sliderbar-profile-avatar" src="<?php echo $this->options->avatarUrl; ?>"/>
+                <?php else: ?>
+                <img id="sliderbar-profile-avatar" src="<?php echo Typecho_Common::gravatarUrl($this->author->mail, '', '', ''); ?>"/>
+                <?php endif; ?>
+            </div>
 
-  <div class="sliderbar-container">
-    <div id="sliderbar-profile" class="sliderbar-content clear">
-      <div id="sliderbar-profile-meta" class="left">
-        <?php if($this->options->avatarUrl != ''): ?>
-          <img id="sliderbar-profile-avatar" src="<?php echo $this->options->avatarUrl; ?>"/>
-        <?php else: ?>
-          <img id="sliderbar-profile-avatar" src="<?php echo Typecho_Common::gravatarUrl($this->author->mail, '', '', ''); ?>"/>
+            <div id="sliderbar-profile-social" class="right">
+                <div class="sliderbar-profile-content">
+                    <h2><a href="<?php Helper::options()->siteUrl(); ?>"><?php $this->author(); ?></a></h2>
+                    <?php if($this->options->bilibiliUrl != ''): ?>
+                    <a href="<?php echo $this->options->bilibiliUrl; ?>"><img class="bili-ico" src="<?php $this->options->themeUrl('ico/bilibili.svg?v=2.0'); ?>"></img></a>
+                    <?php endif; ?>
+
+                    <?php if($this->options->GHUrl != ''): ?>
+                    <a href="<?php echo $this->options->GHUrl; ?>"><img class="github-ico" src="<?php $this->options->themeUrl('ico/github.svg?v=2.0'); ?>"></img></a>
+                    <?php endif; ?>
+
+                    <?php if($this->options->TGUrl != ''): ?>
+                    <a href="<?php echo $this->options->TGUrl; ?>"><img src="<?php $this->options->themeUrl('ico/telegram.svg?v=2.0'); ?>"></img></a>
+                    <?php endif; ?>
+
+                    <?php if($this->options->weiboUrl != ''): ?>
+                    <a href="<?php echo $this->options->weiboUrl; ?>"><img src="<?php $this->options->themeUrl('ico/weibo.svg?v=2.0'); ?>"></img></a>
+                    <?php endif; ?>
+                </div>
+            </div>
+
+            <div class="profile-background" style="background-image: url(<?php echo $this->options->profileBG;  ?>);"></div>
+        </div>
+
+        <div class="sliderbar-content" id="sliderbar-menu">
+            <?php $this->widget('Widget_Contents_Page_List')->to($pages); ?>
+            <a href="/" title="首页">首页</a>
+            <?php while($pages->next()): ?>
+            <a href="<?php $pages->permalink(); ?>" title="<?php $pages->title(); ?>"><?php $pages->title(); ?></a>
+            <?php endwhile; ?>
+        </div>
+
+        <?php $this->widget('Widget_Metas_Category_List')->to($category); ?>
+        <?php if ($category->have()): ?>
+        <div class="sliderbar-content" id="sliderbar-menu">
+            <h3 style="text-align: center;"><b>分类</b></h3>
+            <?php while($category->next()): ?>
+            <a href="<?php $category->permalink(); ?>" title="<?php $category->name(); ?>">
+                <?php
+                $category->name();
+                echo ' (';
+                $category->count();
+                echo ')';
+                ?>
+            </a>
+            <?php endwhile; ?>
+        </div>
         <?php endif; ?>
-      </div>
 
-      <div id="sliderbar-profile-social" class="right">
-        <div class="sliderbar-profile-content">
-          <h2><a href="<?php Helper::options()->siteUrl()?>"><?php $this->author(); ?></a></h2>
-          <?php if($this->options->bilibiliUrl != ''): ?>
-            <a href="<?php echo $this->options->bilibiliUrl; ?>"><img  class="bili-ico" src="<?php $this->options->themeUrl('ico/bilibili.svg?v=1.1'); ?>"></img></a>
-          <?php endif; ?>
-
-          <?php if($this->options->GHUrl != ''): ?>
-            <a href="<?php echo $this->options->GHUrl; ?>"><img class="github-ico" src="<?php $this->options->themeUrl('ico/github.svg?v=1.1'); ?>"></img></a>
-          <?php endif; ?>
-
-          <?php if($this->options->TGUrl != ''): ?>
-            <a href="<?php echo $this->options->TGUrl; ?>"><img src="<?php $this->options->themeUrl('ico/telegram.svg?v=1.3'); ?>"></img></a>
-          <?php endif; ?>
-
-          <?php if($this->options->weiboUrl != ''): ?>
-            <a href="<?php echo $this->options->weiboUrl; ?>"><img src="<?php $this->options->themeUrl('ico/weibo.svg?v=1.1'); ?>"></img></a>
-          <?php endif; ?>
-        </div>
-      </div>
-      <div class="profile-background" style="background-image: url(<?php echo $this->options->profileBG; ?>);"></div>
-    </div>
-
-    <div class="sliderbar-content" id="sliderbar-menu">
-      <?php $this->widget('Widget_Contents_Page_List')->to($pages); ?>
-      <a href="/" title="首页">首页</a>
-      <?php while($pages->next()): ?>
-        <a href="<?php $pages->permalink(); ?>" title="<?php $pages->title(); ?>"><?php $pages->title(); ?></a>
-      <?php endwhile; ?>
-    </div>
-
-    <?php if ($this->options->CommentSwitcher == 1): ?>
-      <?php if($this->is('single')): ?>
+        <?php if ($this->options->CommentSwitcher == 1): ?>
+        <?php if($this->is('single')): ?>
         <div id="sliderbar-comments" class="sliderbar-content">
-          <?php $this->need('comments.php'); ?>
+            <?php $this->need('comments.php'); ?>
         </div>
-      <?php endif; ?>
-    <?php endif; ?>
+        <?php endif; ?>
+        <?php endif; ?>
 
-
-    <div class="sliderbar-content" id="sliderbar-hitokoto hitokoto">
-      <a href="#" id="hitokoto_text">:D 获取中...</a>
-      <script>
-        fetch('https://v1.hitokoto.cn/?c=b')
-          .then(response => response.json())
-          .then(data => {
-            const hitokoto = document.getElementById('hitokoto_text');
-            hitokoto.href = 'https://hitokoto.cn/?uuid=' + data.uuid;
-            hitokoto.innerText = data.hitokoto + '——' + data.from;
-          })
-          .catch(console.error);
-      </script>
+        <script defer>
+            if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent))
+                $(".sliderbar-container").append('<div class="sliderbar-content" id="sliderbar-hitokoto hitokoto"><a href="#" id="hitokoto_text">「一言」获取中...</a><script>fetch("https://v1.hitokoto.cn/?c=b").then(response=>response.json()).then(data=>{$("#hitokoto_text").attr("href","https://hitokoto.cn/?uuid="+data.uuid);$("#hitokoto_text").text(data.hitokoto+"——"+data.from);}).catch(console.error);<\/script><\/div>');
+        </script>
     </div>
-
-  </div>
-
 </div>
 
 <div id="menu-wrap" onclick="sliderbar_toggle()"></div>
-<img id="menu" src="<?php $this->options->themeUrl('ico/menu.svg'); ?>" onclick="sliderbar_toggle()" />
-<img id="night-mode" src="<?php $this->options->themeUrl('ico/night-1.svg'); ?>" onclick="switchNightMode()"/>
+<img id="menu" src="<?php $this->options->themeUrl('ico/menu.svg?v=2.0'); ?>" onclick="sliderbar_toggle()"/>
+<img id="night-mode" src="<?php $this->options->themeUrl('ico/night.svg?v=2.0'); ?>" onclick="switchNightMode()"/>

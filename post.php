@@ -22,11 +22,11 @@ $this->need('header.php');
     <div id="articleInfo">
         <p class="tags">
             <?php
-            _e('标签: ');
+            echo '标签: ';
             $this->tags(', ', true, '⁄(⁄⁄•⁄ω⁄•⁄⁄)⁄什么也没有呢');
             ?>
         </p>
-        <p>文档最后编辑于<?php echo formatTime($this->modified)?></p>
+        <p>文档最后编辑于<?php echo formatTime($this->modified); ?></p>
     </div>
 </div>
 <!-- end #articleBody-->

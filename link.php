@@ -16,12 +16,12 @@ $this->need('header.php');
         emotionContent($content, $this->options->themeUrl);
         ?>
         <div class="friendLinks">
-            <?php formatOut($this->options->links)?>
+            <?php formatOut($this->options->links); ?>
         </div>
     </div>
 
     <div id="articleInfo">
-        <p>文档最后编辑于<?php echo formatTime($this->modified)?></p>
+        <p>文档最后编辑于<?php echo formatTime($this->modified); ?></p>
     </div>
 </div>
 <!-- end #articleBody-->

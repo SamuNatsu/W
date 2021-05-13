@@ -13,9 +13,9 @@ $this->need('header.php');
     </div>
 
     <div id="articleInfo">
-        <p>文档最后编辑于<?php echo formatTime($this->modified)?></p>
+        <p>文档最后编辑于<?php echo formatTime($this->modified); ?></p>
     </div>
 </div>
 <!-- end #articleBody-->
 
-<?php $this->need('footer.php')?>
+<?php $this->need('footer.php'); ?>

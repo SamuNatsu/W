@@ -83,6 +83,7 @@ pre {
 	background:rgba(64,62,62,0.6)
 }
 .friends li {
+    background-color:rgba(255,255,255,0)!important;
 	border-left:2px solid #909090
 }
 .link-item-content h3,.link-item-content span,.link-item-content span::before {
