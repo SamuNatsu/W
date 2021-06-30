@@ -7,8 +7,10 @@ $this->need('header.php');
 <div id="articleBody">
     <div id="articleContent" class="typo">
         <?php
-        $content = $this->content;
-        emotionContent($content, $this->options->themeUrl);
+        if(!preg_match('/<!--more-->([\s\S]*)/', $this->content, $content))
+            emotionContent($this->content, $this->options->themeUrl);
+        else 
+            emotionContent($content[1], $this->options->themeUrl);
         ?>
     </div>
 

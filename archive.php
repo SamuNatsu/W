@@ -9,7 +9,7 @@ $this->need('header.php');
 	<?php while ($this->next()): ?>
     <div class="article-item">
         <h2><a href="<?php $this->permalink(); ?>"><?php $this->title(); ?></a></h2>
-        <span><?php $this->author(); ?> · <?php $this->category(' · '); ?> · <?php echo formatTime($this->created); ?> | <span title="评论数：<?php $this->commentsNum(); ?>"><img class="comment-ico" src="<?php $this->options->themeUrl('ico/comment.svg?v=2.0'); ?>"></img><?php $this->commentsNum(" %d"); ?></span></span>
+        <span><?php $this->author(); ?> · <?php $this->category(' · '); ?> · <?php echo formatTime($this->created); ?> | <span title="阅读量：<?php viewOut($this->fields); ?>"><img class="comment-ico" src="<?php $this->options->themeUrl('ico/view.svg?v=2.0'); ?>"></img><?php viewOut($this->fields, " %d "); ?></span><?php if ($this->allowComment): ?><span title="评论数：<?php $this->commentsNum(); ?>"><img class="comment-ico" src="<?php $this->options->themeUrl('ico/comment.svg?v=2.0'); ?>"></img><?php $this->commentsNum(" %d"); ?></span><?php endif; ?></span>
         <br/>
         <p><?php $this->excerpt(50); ?></p>
     </div>

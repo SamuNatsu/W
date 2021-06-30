@@ -4,6 +4,8 @@
 *
 * @author      youranreus
 */
+if (!defined('__TYPECHO_ROOT_DIR__'))
+    exit;
 ?>
 <div class="OwO OwO-open" id="qaq">
     <div class="OwO-body clear" id="OwO-body">

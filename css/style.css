@@ -266,9 +266,9 @@ blockquote p {
 	height:19px!important
 }
 .comment-ico {
-    vertical-align:middle;
-    top:-1px;
-    position:relative
+	vertical-align:middle;
+	top:-1px;
+	position:relative
 }
 #sliderbar-toc h3 {
 	border-left:3px solid #eee;
@@ -510,6 +510,15 @@ input.submit {
 	color:white;
 	padding:0px 10px;
 	border-radius:.25rem
+}
+button.submit {
+	outline:none;
+	background:#07F;
+	border:2px solid #07F;
+	color:white;
+	padding:0px 10px;
+	border-radius:.25rem;
+	margin:0 20px
 }
 .comment-author {
 	display:inline-block

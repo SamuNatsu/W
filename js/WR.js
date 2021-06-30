@@ -35,7 +35,7 @@ function scrollCallback() {
     if (document.getElementById("articleBody") && !$("#main").hasClass("main-left")) {
         var num = document.getElementById("header").offsetTop;
         var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
-        $("#header-f").attr("style", scrollTop >= num ? "header-fixed" : "");
+        $("#header-f").attr("class", scrollTop >= num ? "header-fixed" : "");
     }
 }
 
@@ -89,7 +89,7 @@ function emotion() {
 
 //lazyload准备
 function lazyloadReady() {
-    $(".typo img").each(function() {
+    $(".typo img:not([no-lazy])").each(function() {
         if (!$(this).hasClass("bq"))
             $(this).attr("data-src", $(this).attr("src")).attr("src", "").addClass("lazy");
     });

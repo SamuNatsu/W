@@ -2,16 +2,24 @@
 if (!defined('__TYPECHO_ROOT_DIR__'))
     exit;
 
+require_once('var/link.php');
+require_once('var/view.php');
+require_once('var/statistic.php');
+require_once('var/badNews.php');
+require_once('var/cIndex.php');
+
+// Theme config
 function themeConfig($form) {
     echo "<link rel='stylesheet' href='https://cdn.jsdelivr.net/gh/youranreus/R@v1.1.5/G/CSS/S.css'/>";
     echo "<h2>W主题设置</h2>";
     
     $links = new Typecho_Widget_Helper_Form_Element_Textarea('links', NULL, NULL, _t('友情链接JSON'), _t('输入一个JSON数组，里面每个元素的都是对象<br/>对象中有name、addr、tag、sign和avt字段<br/>字段分别表示名字、博客地址、标签、签名和头像地址'));
     $form->addInput($links);
+    $bDays = new Typecho_Widget_Helper_Form_Element_Textarea('bDays', NULL, NULL, _t('哀悼日JSON'), _t('输入一个JSON数组，里面每个元素的都是对象<br/>对象中有date和descr字段<br/>字段分别表示日期（YYYY-MM-DD）和描述'));
+    $form->addInput($bDays);
 
     $logoUrl = new Typecho_Widget_Helper_Form_Element_Text('logoUrl', NULL, NULL, _t('站点 LOGO 地址'), _t('在这里填入一个图片 URL 地址, 以在网站标题前加上一个 LOGO'));
     $form->addInput($logoUrl);
-
     $avatarUrl = new Typecho_Widget_Helper_Form_Element_Text('avatarUrl', NULL, NULL, _t('侧栏头像地址'), _t('填入一个你的头像 URL 地址, 留空则使用gravatar头像'));
     $form->addInput($avatarUrl);
 
@@ -26,9 +34,10 @@ function themeConfig($form) {
 
     $ICP = new Typecho_Widget_Helper_Form_Element_Text('ICP', NULL, NULL, _t('ICP备案号'), _t('你的备案号是什么🦆'));
     $form->addInput($ICP);
-
     $createDate = new Typecho_Widget_Helper_Form_Element_Text('createDate', NULL, NULL, _t('建站日期'), _t('什么时候开始建站的🦆'));
     $form->addInput($createDate);
+    $statisticInterval = new Typecho_Widget_Helper_Form_Element_Text('statisticInterval', NULL, 86400, _t('统计信息刷新间隔'), _t('把统计信息缓存在统计页面以减少对数据库的访问，默认为86400秒（一天），当然你也可以设置为0来实时刷新'));
+    $form->addInput($statisticInterval);
 
     $profileBG = new Typecho_Widget_Helper_Form_Element_Text('profileBG', NULL, NULL, _t('侧边栏profile背景图'), _t('https://...'));
     $form->addInput($profileBG);
@@ -63,20 +72,20 @@ function themeConfig($form) {
     $form->addInput($cardSliderbar);
 
     $db = Typecho_Db::get();
-    $sjdq=$db->fetchRow($db->select()->from ('table.options')->where ('name = ?', 'theme:WR'));
+    $sjdq = $db->fetchRow($db->select()->from('table.options')->where('name = ?', 'theme:WR'));
     $ysj = $sjdq['value'];
-    if(isset($_POST['type'])) {
-        if($_POST["type"] == "备份模板数据") {
-            if($db->fetchRow($db->select()->from ('table.options')->where ('name = ?', 'theme:WRbackup'))) {
+    if (isset($_POST['type'])) {
+        if ($_POST["type"] == "备份模板数据") {
+            if ($db->fetchRow($db->select()->from('table.options')->where('name = ?', 'theme:WRbackup'))) {
                 $update = $db->update('table.options')->rows(array('value'=>$ysj))->where('name = ?', 'theme:WRbackup');
-                $updateRows= $db->query($update);
+                $updateRows = $db->query($update);
                 echo '<div class="tongzhi">备份已更新，请等待自动刷新！如果等不到请点击';
 ?>
-<a href="<?php Helper::options()->adminUrl('options-theme.php');?>">这里</a></div>
+<a href="<?php Helper::options()->adminUrl('options-theme.php'); ?>">这里</a></div>
 <script language="JavaScript">window.setTimeout("location=\'<?php Helper::options()->adminUrl('options-theme.php'); ?>\'", 2500);</script>
 <?php
             }
-            elseif($ysj) {
+            else if ($ysj) {
                     $insert = $db->insert('table.options')->rows(array('name' => 'theme:WRbackup','user' => '0','value' => $ysj));
                     $insertId = $db->query($insert);
                     echo '<div class="tongzhi">备份完成，请等待自动刷新！如果等不到请点击';
@@ -86,9 +95,9 @@ function themeConfig($form) {
 <?php
             }
         }
-        if($_POST["type"] == "还原模板数据") {
-            if($db->fetchRow($db->select()->from ('table.options')->where ('name = ?', 'theme:WRbackup'))) {
-                $sjdub = $db->fetchRow($db->select()->from ('table.options')->where ('name = ?', 'theme:WRbackup'));
+        if ($_POST["type"] == "还原模板数据") {
+            if ($db->fetchRow($db->select()->from('table.options')->where('name = ?', 'theme:WRbackup'))) {
+                $sjdub = $db->fetchRow($db->select()->from('table.options')->where('name = ?', 'theme:WRbackup'));
                 $bsj = $sjdub['value'];
                 $update = $db->update('table.options')->rows(array('value'=>$bsj))->where('name = ?', 'theme:WR');
                 $updateRows = $db->query($update);
@@ -101,9 +110,9 @@ function themeConfig($form) {
             else
                 echo '<div class="tongzhi">没有模板备份数据，恢复不了哦！</div>';
         }
-        if($_POST["type"] == "删除备份数据") {
-            if($db->fetchRow($db->select()->from ('table.options')->where ('name = ?', 'theme:WRbackup'))) {
-                $delete = $db->delete('table.options')->where ('name = ?', 'theme:WRbackup');
+        if ($_POST["type"] == "删除备份数据") {
+            if ($db->fetchRow($db->select()->from('table.options')->where('name = ?', 'theme:WRbackup'))) {
+                $delete = $db->delete('table.options')->where('name = ?', 'theme:WRbackup');
                 $deletedRows = $db->query($delete);
                 echo '<div class="tongzhi">删除成功，请等待自动刷新，如果等不到请点击';
 ?>
@@ -141,39 +150,24 @@ function formatTime($time) {
     $t = time() - $time; //时间差 （秒）
     if ($t == 0)
         $text = '刚刚';
-    elseif ($t < 60)
+    else if ($t < 60)
         $text = $t . '秒前'; // 一分钟内
-    elseif ($t < 60 * 60)
+    else if ($t < 60 * 60)
         $text = floor($t / 60) . '分钟前'; //一小时内
-    elseif ($t < 60 * 60 * 24)
+    else if ($t < 60 * 60 * 24)
         $text = floor($t / (60 * 60)) . '小时前'; // 一天内
-    elseif ($t < 60 * 60 * 24 * 3)
+    else if ($t < 60 * 60 * 24 * 3)
         $text = floor($time / (60 * 60 * 24)) == 1 ? '昨天 ' . date('H:i', $time) : '前天 ' . date('H:i', $time); //昨天和前天
-    elseif ($t < 60 * 60 * 24 * 30)
+    else if ($t < 60 * 60 * 24 * 30)
         $text = date('m月d日 H:i', $time); //一个月内
-    elseif ($t < 60 * 60 * 24 * 365)
+    else if ($t < 60 * 60 * 24 * 365)
         $text = date('m月d日', $time); //一年内
     else
         $text = date('Y年m月d日', $time); //一年以前
     return $text;
 }
 
-/**
-* 文章内容解析（短代码，表情）
-*
-* @access public
-* @param mixed
-* @return
-*/
-function emotionContent($content, $url) {
-    //表情解析
-    $fcontent = preg_replace('#\@\((.*?)\)#', '<img src="https://cdn.jsdelivr.net/gh/youranreus/R@v1.0.3/G/IMG/bq/$1.png" class="bq">', $content);
-    //输出最终结果
-    echo $fcontent;
-}
-
 function getBuildTime($date) {
-    // 在下面按格式输入本站创建的时间
     if ($date == '') {
         echo '';
         return;
@@ -191,6 +185,21 @@ function getBuildTime($date) {
         echo '';
 }
 
+/**
+* 文章内容解析（短代码，表情）
+*
+* @access public
+* @param mixed
+* @return
+*/
+function emotionContent($content, $url) {
+    //表情解析
+    $fcontent = preg_replace('#\@\((.*?)\)#', '<img src="https://cdn.jsdelivr.net/gh/youranreus/R@v1.0.3/G/IMG/bq/$1.png" class="bq">', $content);
+    //输出最终结果
+    echo $fcontent;
+}
+
+// Navigation
 function prev_post($archive) {
     $db = Typecho_Db::get();
     $content = $db->fetchRow($db->select()
@@ -228,17 +237,6 @@ function next_post($archive) {
         echo "<p class=\"next\"><span>没有更多了</span></p>";
 }
 
-// Links
-function formatOut($json) {
-    $json = json_decode($json, true);
-    if ($json == NULL) {
-        echo '<p style="text-align:center;"><b style="color:red;">[Links error]</b></p>';
-        return;
-    }
-    foreach ($json as $key)
-        echo '<li><a href="' . $key['addr'] . '" title="' . $key['name'] . ' | ' . $key['sign'] . '" target="_blank"></a><img src="' . $key['avt'] . '"/><div><h3>' . $key['name'] . '</h3><span>' . $key['tag'] . '</span><p>' . $key['sign'] . '</p></div></li>';
-}
-
 // Compress html
 function compressHtml($html_source) {
     $chunks = preg_split('/(<!--<nocompress>-->.*?<!--<\/nocompress>-->|<nocompress>.*?<\/nocompress>|<pre.*?\/pre>|<textarea.*?\/textarea>|<script.*?\/script>)/msi', $html_source, -1, PREG_SPLIT_DELIM_CAPTURE);
@@ -271,9 +269,9 @@ function compressHtml($html_source) {
                     foreach ($chars as $key => $char)
                         if ($char == '"' && $chars[$key - 1] != '\\' && !$is_apos)
                             $is_quot = !$is_quot;
-                        elseif ($char == '\'' && $chars[$key - 1] != '\\' && !$is_quot)
+                        else if ($char == '\'' && $chars[$key - 1] != '\\' && !$is_quot)
                             $is_apos = !$is_apos;
-                        elseif ($char == '/' && $chars[$key + 1] == '/' && !$is_quot && !$is_apos) {
+                        else if ($char == '/' && $chars[$key + 1] == '/' && !$is_quot && !$is_apos) {
                             $tmp = substr($tmp, 0, $key);
                             break;
                         }

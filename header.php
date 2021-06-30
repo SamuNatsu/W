@@ -2,6 +2,7 @@
 if (!defined('__TYPECHO_ROOT_DIR__'))
     exit;
 ob_start();
+viewUpdate($this);
 ?>
 
 <!DOCTYPE HTML>
@@ -25,9 +26,9 @@ ob_start();
 
     <!-- 使用url函数转换相关路径 -->
     <link rel="stylesheet" href="<?php $this->options->themeUrl('css/style.min.css?v=2.0'); ?>">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/youranreus/R@v1.1.0/W/prism.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/youranreus/R@v1.1.0/W/typo.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/youranreus/R@v1.1.0/G/CSS/OwO.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism-tomorrow.css">
     <link href="<?php $this->options->themeUrl('css/dark.min.css?v=2.0'); ?>" rel="<?php if($_COOKIE['night'] != '1') echo 'alternate '; ?>stylesheet" type="text/css" title="dark">
 
     <link rel="icon" type="image/png" href="<?php $this->options->logoUrl(); ?>">
@@ -36,7 +37,12 @@ ob_start();
 
     <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-c.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-cpp.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-markup-templating.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-php.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-php-extras.min.js"></script>
 
     <script src="<?php $this->options->themeUrl('js/WR.js?v=2.0'); ?>"></script>
     <script src="<?php $this->options->themeUrl('js/topbar.min.js?v=1.0.0'); ?>"></script>
@@ -94,6 +100,7 @@ ob_start();
         <?php endif; ?>
         
         html {
+            <?php bdNewsCSS($this->options->bDays); ?>
             background-image:url(<?php echo $this->options->bodyBG; ?>);
             background-repeat:no-repeat;
             background-attachment:fixed;
@@ -116,8 +123,10 @@ ob_start();
         <?php elseif($this->is('archive')): ?>
         <a href="#" onclick="window.history.go(-1)">
         <?php
-            if ($this->getArchiveType() == 'front')
+            if ($this->getArchiveType() == 'front') {
                 $this->setArchiveTitle('文章');
+                $this->isblog = true;
+            }
             $this->archiveTitle(array(
                 'category'  =>  _t('「%s」'),
                 'search'    =>  _t('「%s」'),
@@ -131,14 +140,16 @@ ob_start();
         <?php endif; ?>
     </h2>
 
-    <?php if($this->is('post')): ?>
-    <span><?php $this->author(); ?> · <?php $this->category(','); ?> · <?php $this->date(); ?></span>
-    <?php else: ?>  
+    <?php if ($this->isblog || $this->is('index') || $this->is('archive')): ?>
     <span><?php $this->options->description(); ?></span>
+    <?php elseif ($this->is('post')): ?>
+    <span><?php $this->author(); ?> · <?php $this->category(','); ?> · <?php $this->date(); ?> | <span title="阅读量：<?php viewOut($this->fields); ?>"><img class="comment-ico" src="<?php $this->options->themeUrl('ico/view.svg?v=2.0'); ?>"></img><?php viewOut($this->fields, " %d "); ?></span><span title="评论数：<?php $this->commentsNum(); ?>"><img class="comment-ico" src="<?php $this->options->themeUrl('ico/comment.svg?v=2.0'); ?>"></img><?php $this->commentsNum(" %d "); ?></span>
+    <?php else: ?>
+    <span><?php $this->options->description(); ?> | <span title="阅读量：<?php viewOut($this->fields); ?>"><img class="comment-ico" src="<?php $this->options->themeUrl('ico/view.svg?v=2.0'); ?>"></img><?php viewOut($this->fields, " %d "); ?></span><?php if ($this->allowComment): ?><span title="评论数：<?php $this->commentsNum(); ?>"><img class="comment-ico" src="<?php $this->options->themeUrl('ico/comment.svg?v=2.0'); ?>"></img><?php $this->commentsNum(" %d "); ?><?php endif; ?></span>
     <?php endif; ?>
 </div>
 
-<?php if($this->is('post') or $this->is('page')): ?>
+<?php if ($this->is('post') or $this->is('page')): ?>
 <div id="header-f">
     <h2><a href="#" onclick="window.history.go(-1)"><?php $this->title(); ?></a></h2>
 </div>

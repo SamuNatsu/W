@@ -17,11 +17,13 @@ if (!defined('__TYPECHO_ROOT_DIR__'))
 <?php $this->need('sliderbar.php'); ?>
 
 <img id="gototop" style="display:none;" src="<?php $this->options->themeUrl('ico/top.svg'); ?>"></img>
+
+<script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.min.js"></script>
 <script>
     lazyloadReady();
     var lazyLoadInstance = new LazyLoad();
     var pjax = new Pjax({
-        elements: 'a:not([target="_blank"])',
+        elements: 'a:not([no-pjax])',
         selectors: ['title', '#main']
     });
     function pjaxSendCallback() {
@@ -31,15 +33,18 @@ if (!defined('__TYPECHO_ROOT_DIR__'))
     }
     function pjaxCompleteCallback() {
         autoRun();
+        $("#gototop").click(scrollTop);
         lazyloadReady();
         lazyLoadInstance.update();
+        Prism.highlightAll();
         topbar.hide();
     }
     document.addEventListener("pjax:send", pjaxSendCallback);
     document.addEventListener("pjax:complete", pjaxCompleteCallback);
 </script>
 
-<script src="https://cdn.jsdelivr.net/gh/youranreus/R@v1.1.0/W/prism.js"></script>
+<?php bdNewsOut($this->options->bDays); ?>
+
 <?php $this->footer(); ?>
 
 </body>

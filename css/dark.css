@@ -1,7 +1,5 @@
 html {
-	background:#2c2a2a
-}
-body {
+	background:#2c2a2a;
 	background-color:rgba(0,0,0,0.9)!important
 }
 h1,h2,h3,h4,h5,p,a,b,em,strong,li {
@@ -82,7 +80,7 @@ pre {
 .OwO .OwO-body .OwO-items .OwO-item {
 	background:rgba(64,62,62,0.6)
 }
-.friends li {
+.friendLinks li {
     background-color:rgba(255,255,255,0)!important;
 	border-left:2px solid #909090
 }

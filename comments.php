@@ -1,6 +1,8 @@
 <?php
 if (!defined('__TYPECHO_ROOT_DIR__'))
     exit;
+if ($this->is('page') && !$this->allow('comment'))
+    return;
 ?>
 
 <div id="comments">
@@ -12,7 +14,7 @@ if (!defined('__TYPECHO_ROOT_DIR__'))
             $comments->pageNav('<<', '>>');
         }
     ?>
-    <?php if($this->allow('comment')): ?>
+    <?php if ($this->allow('comment')): ?>
     <div id="<?php $this->respondId(); ?>" class="respond">
         <div class="cancel-comment-reply">
             <?php $comments->cancelReply(); ?>
@@ -20,7 +22,7 @@ if (!defined('__TYPECHO_ROOT_DIR__'))
 
         <h3 id="response"><?php echo '让我也说点啥'; ?></h3>
         <form method="post" action="<?php $this->commentUrl(); ?>" id="comment-form" role="form" class="clear">
-            <?php if(!$this->user->hasLogin()): ?>
+            <?php if (!$this->user->hasLogin()): ?>
             <input type="text" name="author" id="author" class="text" placeholder="<?php echo '尊姓大名'; ?>" value="<?php $this->remember('author'); ?>" required/>
             <input type="email" name="mail" id="mail" class="text" placeholder="<?php echo '邮箱'; ?>" value="<?php $this->remember('mail'); ?>"<?php if ($this->options->commentsRequireMail): ?> required<?php endif; ?>/>
 			<input type="url" name="url" id="url" class="text" placeholder="<?php echo 'https://'; ?>" value="<?php $this->remember('url'); ?>"<?php if ($this->options->commentsRequireURL): ?> required<?php endif; ?>/>
